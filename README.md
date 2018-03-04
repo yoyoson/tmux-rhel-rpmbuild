@@ -12,6 +12,7 @@ RHEL 6.9
 
 # Usage
 ./buildrpm.sh libevent
+
 yum install libevent 
 
 ./buildrpm.sh tmux
