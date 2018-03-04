@@ -1,0 +1,24 @@
+NAME=libevent
+VERSION=2.1.8
+RELEASE=stable
+TARFILE=$(NAME)-$(VERSION)-$(RELEASE).tar.gz
+
+SRCDIR=$(NAME)-$(VERSION)-$(RELEASE)
+TMPDIR=$(SRCDIR)-tempinst
+PKGNAME=$(NAME)
+RPMUSER=root
+
+
+.PHONY: libevent
+libevent:
+	rm -f $(TARFILE)
+	rm -Rf $(SRCDIR) $(TMPDIR)
+	wget https://github.com/$(NAME)/$(NAME)/releases/download/release-$(VERSION)-$(RELEASE)/$(TARFILE)
+	tar xzf $(TARFILE)
+	cd $(SRCDIR); ./configure
+	$(MAKE) -C $(SRCDIR) 
+	mkdir $(TMPDIR)
+	$(MAKE) -C $(SRCDIR) install DESTDIR=`pwd`/$(TMPDIR)
+	rm -f $(NAME)*$(VERSION)*.rpm
+	fpm -s dir -t rpm --rpm-user=$(RPMUSER) -n $(PKGNAME) -v $(VERSION) -C $(TMPDIR) .
+

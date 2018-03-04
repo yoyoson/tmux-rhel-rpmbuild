@@ -1,0 +1,27 @@
+NAME=tmux-resurrect
+VERSION=2.4
+RELEASE=42f77b3
+
+#TARFILE=$(NAME)-$(VERSION).tar.gz
+SRCDIR=$(NAME)-$(VERSION)-$(RELEASE)
+TMPDIR=$(SRCDIR)-tempinst
+TARGETDIR=/opt/install
+CONFDIR=/etc
+CONF=tmux.conf
+SRCCONF=tmux-resurrect.conf
+PKGNAME=$(NAME)
+RPMUSER=root
+
+
+
+
+.PHONY: $(NAME)
+$(NAME):
+	mkdir -p ./$(SRCDIR)$(TARGETDIR)
+	mkdir -p ./$(SRCDIR)$(CONFDIR)
+	git clone https://github.com/tmux-plugins/$(NAME)  $(SRCDIR)$(TARGETDIR)
+	cp ./$(SRCCONF) ./$(SRCDIR)$(CONFDIR)/$(CONF)
+	chmod 644 $(SRCDIR)$(CONFDIR)/$(CONF)
+	rm -f $(NAME)*$(VERSION)*$(RELEASE).rpm
+	fpm -s dir -t rpm --rpm-user=$(RPMUSER) -n $(PKGNAME) -v $(VERSION) --iteration $(RELEASE) -d 'tmux > 1.9' -C $(SRCDIR) .
+
