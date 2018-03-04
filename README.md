@@ -28,4 +28,4 @@ yum install ./libevent\*.rpm
 
 ./buildrpm.sh tmux-resurrect yourname
 
-ls \*.rpm
+ls fpm-\*/\*.rpm
