@@ -11,6 +11,10 @@ FPM (https://github.com/jordansissel/fpm)
 
 RHEL 6.9
 
+# WARNING
+
+The tmux-resurrect RPM might obliterate your /etc/tmux.conf file, if you have one.
+
 # Usage
 ./buildrpm.sh libevent
 
