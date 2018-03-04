@@ -7,6 +7,10 @@ Ruby 1.9.3 (installed via RVM, https://gist.github.com/slouma2000/8619039)
 
 FPM (https://github.com/jordansissel/fpm)
 
+wget
+
+git (for tmux-resurrect plugin)
+
 # Tested on 
 
 RHEL 6.9
@@ -18,10 +22,10 @@ The tmux-resurrect RPM might obliterate your /etc/tmux.conf file, if you have on
 # Usage
 ./buildrpm.sh libevent
 
-yum install libevent 
+yum install ./libevent\*.rpm
 
 ./buildrpm.sh tmux
 
 ./buildrpm.sh tmux-resurrect
 
-find . -iname '*.rpm'
+ls \*.rpm
