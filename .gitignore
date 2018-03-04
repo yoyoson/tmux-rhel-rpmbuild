@@ -1,2 +1,4 @@
 *.rpm
 *.swp
+fpm-*
+!fpm-tmux-resurrect/tmux-resurrect.conf
