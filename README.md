@@ -20,12 +20,12 @@ RHEL 6.9
 The tmux-resurrect RPM might obliterate your /etc/tmux.conf file, if you have one.
 
 # Usage
-./buildrpm.sh libevent
+./buildrpm.sh libevent yourname
 
 yum install ./libevent\*.rpm
 
-./buildrpm.sh tmux
+./buildrpm.sh tmux yourname
 
-./buildrpm.sh tmux-resurrect
+./buildrpm.sh tmux-resurrect yourname
 
 ls \*.rpm
