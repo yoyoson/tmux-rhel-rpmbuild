@@ -1,9 +1,10 @@
 NAME=tmux-resurrect
 VERSION=2.4
-RELEASE=42f77b3
+PKGRELEASE=42f77b3
+DIST=el6
 
 #TARFILE=$(NAME)-$(VERSION).tar.gz
-SRCDIR=$(NAME)-$(VERSION)-$(RELEASE)
+SRCDIR=$(NAME)-$(VERSION)-$(PKGRELEASE)
 TMPDIR=$(SRCDIR)-tempinst
 TARGETDIR=/opt/tmux-plugins/$(NAME)
 CONFDIR=/etc
@@ -11,18 +12,26 @@ CONF=tmux.conf
 SRCCONF=tmux-resurrect.conf
 PKGNAME=$(NAME)
 RPMUSER=root
-
-
-
+PACKAGER=${PACKAGER}
+DESC="Save all tmux sessions and layouts, and restore them. Works after system restart."
 
 .PHONY: $(NAME)
 $(NAME):
-	mkdir -p ./$(SRCDIR)$(TARGETDIR)
 	mkdir -p ./$(SRCDIR)$(CONFDIR)
 	rm -Rf  ./$(SRCDIR)$(TARGETDIR)
 	git clone https://github.com/tmux-plugins/$(NAME)  $(SRCDIR)$(TARGETDIR)
 	cp ./$(SRCCONF) ./$(SRCDIR)$(CONFDIR)/$(CONF)
 	chmod 644 $(SRCDIR)$(CONFDIR)/$(CONF)
-	rm -f $(NAME)*$(VERSION)*$(RELEASE)*.rpm
-	fpm -s dir -t rpm --rpm-user=$(RPMUSER) -n $(PKGNAME) -v $(VERSION) --iteration $(RELEASE) -d 'tmux > 1.9' -C $(SRCDIR) .
+	#rm -f $(NAME)*$(VERSION)*$(PKGRELEASE)*.rpm
+	fpm -s dir -t rpm \
+		--force \
+		--rpm-user $(RPMUSER) \
+		--maintainer $(PACKAGER) \
+		--description $(DESC) \
+		-n $(PKGNAME) \
+		-v $(VERSION) \
+		--iteration $(PKGRELEASE) \
+		--rpm-dist $(DIST) \
+		-d 'tmux > 1.9' \
+		-C $(SRCDIR) .
 

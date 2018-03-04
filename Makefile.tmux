@@ -1,14 +1,19 @@
 NAME=tmux
 VERSION=2.6
-#RELEASE=stable
+PKGRELEASE=1
+DIST=el6
 
 TARFILE=$(NAME)-$(VERSION).tar.gz
 SRCDIR=$(NAME)-$(VERSION)
 TMPDIR=$(SRCDIR)-tempinst
 PKGNAME=$(NAME)
 RPMUSER=root
-
-
+PACKAGER=${PACKAGER}
+DESC="$$(printf "tmux is a terminal multiplexer.\n\
+It lets you switch easily between several programs in one terminal,\n\
+detach them (they keep running in the background) and reattach them\n\
+to a different terminal. And do a lot more. See the tmux(1) manual\n\
+page and the README.")"
 
 .PHONY: tmux
 tmux:
@@ -20,6 +25,17 @@ tmux:
 	$(MAKE) -C $(SRCDIR) 
 	mkdir $(TMPDIR)
 	$(MAKE) -C $(SRCDIR) install DESTDIR=`pwd`/$(TMPDIR)
-	rm -f $(NAME)*$(VERSION)*.rpm
-	fpm -s dir -t rpm --rpm-user=$(RPMUSER) -n $(PKGNAME) -v $(VERSION) -d 'libevent > 2.1' -d ncurses -C $(TMPDIR) .
+	#rm -f $(NAME)*$(VERSION)*.rpm
+	fpm -s dir -t rpm \
+		--force \
+		--rpm-user=$(RPMUSER) \
+		--maintainer=$(PACKAGER) \
+		--description=$(DESC) \
+		-n $(PKGNAME) \
+		-v $(VERSION) \
+		--iteration $(PKGRELEASE) \
+		--rpm-dist $(DIST) \
+		-d 'libevent > 2.1' \
+		-d ncurses \
+		-C $(TMPDIR) .
 

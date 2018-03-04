@@ -1,13 +1,22 @@
 NAME=libevent
 VERSION=2.1.8
 RELEASE=stable
+PKGRELEASE=1
+DIST=el6
 TARFILE=$(NAME)-$(VERSION)-$(RELEASE).tar.gz
 
 SRCDIR=$(NAME)-$(VERSION)-$(RELEASE)
 TMPDIR=$(SRCDIR)-tempinst
 PKGNAME=$(NAME)
 RPMUSER=root
-
+PACKAGER=${PACKAGER}
+SUMMARY="Abstract asynchronous event notification library"
+DESC="$$(printf "The libevent API provides a mechanism to execute a callback function\n\
+when a specific event occurs on a file descriptor or after a timeout\n\
+has been reached. libevent is meant to replace the asynchronous event\n\
+loop found in event driven network servers. An application just needs\n\
+to call event_dispatch and can then add or remove events dynamically\n\
+without having to change the event loop.")"
 
 .PHONY: libevent
 libevent:
@@ -19,6 +28,16 @@ libevent:
 	$(MAKE) -C $(SRCDIR) 
 	mkdir $(TMPDIR)
 	$(MAKE) -C $(SRCDIR) install DESTDIR=`pwd`/$(TMPDIR)
-	rm -f $(NAME)*$(VERSION)*.rpm
-	fpm -s dir -t rpm --rpm-user=$(RPMUSER) -n $(PKGNAME) -v $(VERSION) -C $(TMPDIR) .
+	#rm -f $(NAME)*$(VERSION)*.rpm
+	fpm -s dir -t rpm \
+		--force \
+		--rpm-user $(RPMUSER) \
+		--maintainer $(PACKAGER) \
+		--description $(DESC) \
+		--rpm-summary $(SUMMARY) \
+		-n $(PKGNAME) \
+		-v $(VERSION) \
+		--iteration $(PKGRELEASE) \
+		--rpm-dist $(DIST) \
+		-C $(TMPDIR) .
 
