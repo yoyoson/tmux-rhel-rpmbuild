@@ -1,11 +1,12 @@
 NAME=libevent
-VERSION=2.1.8
+VERSION=2.0.21
 RELEASE=stable
 PKGRELEASE=1
 DIST=el6
-TARFILE=$(NAME)-$(VERSION)-$(RELEASE).tar.gz
+#TARFILE=$(NAME)-$(VERSION)-$(RELEASE).tar.gz
+TARFILE=release-${VERSION}-${RELEASE}.tar.gz
 
-SRCDIR=$(NAME)-$(VERSION)-$(RELEASE)
+SRCDIR=$(NAME)-release-$(VERSION)-$(RELEASE)
 TMPDIR=$(SRCDIR)-tempinst
 PKGNAME=$(NAME)
 RPMUSER=root
@@ -22,9 +23,10 @@ without having to change the event loop.")"
 libevent:
 	rm -f $(TARFILE)
 	rm -Rf $(SRCDIR) $(TMPDIR)
-	wget https://github.com/$(NAME)/$(NAME)/releases/download/release-$(VERSION)-$(RELEASE)/$(TARFILE)
+	#wget https://github.com/$(NAME)/$(NAME)/releases/download/release-$(VERSION)-$(RELEASE)/$(TARFILE)
+	wget https://github.com/$(NAME)/$(NAME)/archive/$(TARFILE)
 	tar xzf $(TARFILE)
-	cd $(SRCDIR); ./configure
+	cd $(SRCDIR); ./autogen.sh; ./configure
 	$(MAKE) -C $(SRCDIR) 
 	mkdir $(TMPDIR)
 	$(MAKE) -C $(SRCDIR) install DESTDIR=`pwd`/$(TMPDIR)

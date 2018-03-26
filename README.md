@@ -14,6 +14,7 @@ git (for tmux-resurrect plugin)
 # Tested on 
 
 RHEL 6.9
+Centos 7.4
 
 # WARNING
 
@@ -22,7 +23,7 @@ The tmux-resurrect RPM might obliterate your /etc/tmux.conf file, if you have on
 # Usage
 ./buildrpm.sh libevent yourname
 
-yum install ./libevent\*.rpm
+yum install fpm-libevent/libevent\*.rpm
 
 ./buildrpm.sh tmux yourname
 

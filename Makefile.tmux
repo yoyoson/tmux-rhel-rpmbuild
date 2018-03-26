@@ -35,7 +35,7 @@ tmux:
 		-v $(VERSION) \
 		--iteration $(PKGRELEASE) \
 		--rpm-dist $(DIST) \
-		-d 'libevent > 2.1' \
+		-d 'libevent >= 2.0' \
 		-d ncurses \
 		-C $(TMPDIR) .
 
