@@ -30,3 +30,11 @@ yum install fpm-libevent/libevent\*.rpm
 ./buildrpm.sh tmux-resurrect yourname
 
 ls fpm-\*/\*.rpm
+
+# Notes
+
+On RHEL6, You might have to first "yum remove libevent" and then 
+"yum install <new libevent RPM>" because there are nfs dependencies
+that can't immediately use the new libevent.
+
+So hopefully you aren't using NFS. If you are, sorry about that.
