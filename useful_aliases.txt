@@ -1,0 +1,50 @@
+#!/bin/csh
+
+if ($?DESKTOP_SESSION && ! $?TMUX ) then
+  /usr/bin/setxkbmap -option "caps:swapescape"
+endif
+setenv SVN_EDITOR /usr/bin/vim
+alias svndiff "svn diff \!* | vim -R -"
+alias duu "du -ks * | sort -k 1n | awk '{system("\""du -hs "\"""\$"2)}'"
+if ( $?TMUX_PANE ) then
+    # all of these are ways to get a diffrent value corresponding ot your pane number (use with tmux synchronize-panes
+    # takes 1 number as input
+    # output: the current TMUX_PANE number module $input, 0-based counting
+    alias pmod "echo $TMUX_PANE | sed 's/%\([0-9]*\)/\1 % \!*/g' | bc"
+    
+    # takes 1 number as input
+    # output: the current TMUX_PANE number module $input, 1-based counting
+    alias pmod1 "echo $TMUX_PANE | sed 's/%\([0-9]*\)/\1 % \!* + 1/g' | bc"
+
+    # takes no input
+    # output: number of tmux panes in this window
+    alias numpanes "tmux list-panes | wc -l"
+    
+    # takes no input
+    # output: TMUX_PANE number modulo ${number of PANES in this window}, but the pane0 does not necessarily become output value 0 
+    alias pmod2 'echo $TMUX_PANE | sed "s/%\([0-9]*\)/\1 % `numpanes` + 1/g" | bc'
+
+    # takes no input 
+    # output: the 'q' number of this pane in this window
+    alias nmod 'tmux list-panes | grep $TMUX_PANE | cut -f1 -d":" '
+
+    # takes no input 
+    # output: the 'q' number of this pane in this window + 1
+    alias nmod1 'tmux list-panes | grep $TMUX_PANE | cut -f1 -d":" | xargs printf "%s +1\n" | bc '
+
+    # takes no input
+    # sets p to the 'q' number of this pane
+    alias ppp "set p=`nmod1`"
+
+    # takes 1 number as input
+    # Split current window into that many panes.
+    alias panes "echo 'foreach x ("'`'"echo '\!* - 1'|bc |xargs seq "'`'")\n tmux split-pane; tmux select-layout tiled; tmux send-keys ppp C-m\n end' | tcsh; ppp; tmux set-window-option synchronize-panes"
+
+endif
+setenv TERM "screen-256color"
+
+#LC_ALL, LANG, LANGUAGE env vars needed for getting pipenv (python3.6 virtual envs) to work w/o crashing on UnicodeEncodeErrors
+setenv LC_ALL   en_US.UTF-8
+setenv LANG     en_US.UTF-8
+setenv LANGUAGE en_US.UTF-8
+
