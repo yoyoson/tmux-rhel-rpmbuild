@@ -41,3 +41,7 @@ On RHEL6, You might have to first "yum remove libevent" and then
 that can't immediately use the new libevent.
 
 So hopefully you aren't using NFS. If you are, sorry about that.
+
+# License
+
+This project is licensed under the terms of the MIT license.
